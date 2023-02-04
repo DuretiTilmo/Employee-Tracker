@@ -1,5 +1,26 @@
 {
   "dependencies": {
-    "inquirer": "^8.2.4"
-  }
+    "inquirer": "^8.2.4",
+    "express": "^4.17.1",
+    "mysql2": "^2.2.5"
+  },
+  "scripts": {
+    "start": "node server.js"
+  },
+  "name": "employee-tracker",
+  "description": "",
+  "version": "1.0.0",
+  "main": "server.js",
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DuretiTilmo/Employee-Tracker.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/DuretiTilmo/Employee-Tracker/issues"
+  },
+  "homepage": "https://github.com/DuretiTilmo/Employee-Tracker#readme"
 }
