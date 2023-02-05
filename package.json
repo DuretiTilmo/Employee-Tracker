@@ -1,7 +1,8 @@
 {
   "dependencies": {
-    "inquirer": "^8.2.4",
+    "console.table": "^0.10.0",
     "express": "^4.17.1",
+    "inquirer": "^8.2.4",
     "mysql2": "^2.2.5"
   },
   "scripts": {
@@ -11,7 +12,6 @@
   "description": "",
   "version": "1.0.0",
   "main": "server.js",
-  "devDependencies": {},
   "repository": {
     "type": "git",
     "url": "git+https://github.com/DuretiTilmo/Employee-Tracker.git"
@@ -22,5 +22,6 @@
   "bugs": {
     "url": "https://github.com/DuretiTilmo/Employee-Tracker/issues"
   },
-  "homepage": "https://github.com/DuretiTilmo/Employee-Tracker#readme"
+  "homepage": "https://github.com/DuretiTilmo/Employee-Tracker#readme",
+  "devDependencies": {}
 }
