@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "console.table": "^0.10.0",
+    "dotenv": "^8.6.0",
     "express": "^4.17.1",
     "inquirer": "^8.2.4",
     "mysql2": "^2.2.5"
@@ -22,6 +23,5 @@
   "bugs": {
     "url": "https://github.com/DuretiTilmo/Employee-Tracker/issues"
   },
-  "homepage": "https://github.com/DuretiTilmo/Employee-Tracker#readme",
-  "devDependencies": {}
+  "homepage": "https://github.com/DuretiTilmo/Employee-Tracker#readme"
 }
