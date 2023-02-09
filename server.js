@@ -288,7 +288,7 @@ inquirer.prompt(addRole)
        const params = [role, salary, id ];
 
    db.query(sql, params, (err, result) => {   
-     console.table(result);
+    //  console.table(result);
      
        init();
    });
@@ -315,7 +315,7 @@ const newEmployee = () => {
      
        db.query(sql, params, (err, rows) => {
 
-    console.table(rows);
+    // console.table(rows);
 
     // console.log(params);
 
