@@ -4,7 +4,6 @@ const mysql = require('mysql2');
 const inquirer = require('inquirer');
 const cTable = require('console.table');
 
-
 let choice = '';
 
 // to get department id and names
@@ -18,7 +17,8 @@ let employeeRoles = [];
 let managersName = [];
 let managersNameandId = [];
 
-
+let nameAndId = [];
+let titleAndId = [];
 let myEmployees= [];
 let myRoles = [];
 // Connect to database
@@ -111,7 +111,7 @@ const addDepartment = [
 ]
    // View list of all employees and associated info using JOIN
 const getEmployee = () => {
-    const sql = `SELECT employee.first_name, employee.last_name, employee.manager_id, role1.salary, role1.title, department.name as department FROM employee JOIN role1 ON employee.role_id = role1.id JOIN department ON department.id = role1.department_id;`;
+    const sql = `SELECT employee.id,employee.first_name, employee.last_name, employee.manager_id, role1.salary, role1.title, department.name as department FROM employee JOIN role1 ON employee.role_id = role1.id JOIN department ON department.id = role1.department_id;`;
     
     db.query(sql, (err, result) => {
        
@@ -206,13 +206,14 @@ const updateRole = [
           choices: myRoles
       }
 
-  ];
+  ]
 const init = () => {
   getDepartmentNames();
   getEmployeeNames();
   getRoleId();
-  // updateEmployee();
   getMangerName();
+  getAllRoles();
+  getAllEmployee();
   inquirer.prompt(promptUser)
 
   .then((data) => {
@@ -244,7 +245,8 @@ const init = () => {
           newEmployee();
 
       } else if (choice == "Update an employee role") {
-            updatedRole();      
+            updatedRole();     
+            updateEmployee();
             // updateEmployee();
 
       }
@@ -265,6 +267,7 @@ const newDepartment = () => {
    
    db.query(sql, params, (err, result) => {
      console.table(result);
+    console.log(result)
       init();
    });
   });
@@ -297,7 +300,6 @@ const newEmployee = () => {
      .then ((data) => {
  
       const {firstName, lastName, employeeRole, manager} = data;
-    //   const employee = new Employee(id, first_name, last_name, manager_id)
 
   //  console.log(data);
      const sql = `INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?)`;
@@ -321,37 +323,94 @@ const newEmployee = () => {
 });
 } 
 
-// Update employee role
-const updateEmployee = () => {
 
-  const sql = `SELECT CONCAT(first_name ,' ' , last_name) AS 'full_name' FROM employee; `;
-  // UPDATE employee SET employee.first_name = first_name and employee.last_name = last_name WHERE first_name;
+const getAllRoles = () => {
+  const sql = `SELECT id, title from role1`;
   db.query(sql, (err, rows) => {
     for (i = 0; i < rows.length; i++) {
-       myEmployees.push(rows[i].full_name);
-       myRoles.push(rows[i]);
-       
-      //  console.table(rows);
+    
+      myRoles.push(rows[i].title);
+
+      titleAndId.push(rows[i]);
+    }
+    
+  });
+}
+
+const getTitleAndId = (role) => {
+  for (i = 0; i < titleAndId.length; i++) {
+    if (titleAndId[i].title === role) {
+       return titleAndId[i].id;
+    }
+  }
+}
+
+const getAllEmployee = () =>{
+  const sql = `SELECT id, CONCAT(first_name ,' ' , last_name) AS 'full_name' FROM employee;`;
+
+  db.query(sql, (err, rows) => {
+    for (i = 0; i < rows.length; i++) {
+      nameAndId.push(rows[i]);
+         myEmployees.push(rows[i].full_name);
     }
   });
 }
 
+const getEmployeeId = (name) => {
+  for (i = 0; i < nameAndId.length; i++) {
+    console.log(nameAndId[i]);
+    if (nameAndId[i].full_name === name) {
+   
+       return nameAndId[i].id;
+     
+    }
+  }
+}
+
+// // Update employee role
+const updateEmployee = () => {
+  inquirer.prompt(updateRole)
+  .then((data) => { 
+
+    const [ employeeUpdate] = data
+  const sql = `UPDATE employee SET employee.first_name = first_name and employee.last_name = last_name WHERE first_name ANd last_name;`;
+
+  let employee = getEmployeeId(employeeUpdate); 
+
+  const params = [employee];
+
+  db.query(sql, params, (err, result) => {
+    for (i = 0; i < result.length; i++) {
+      myRoles.push(result[i].id);
+  //     myEmployees.push(result[i].full_name);
+   }
+  console.log(result);
+    console.table(result);
+    
+    init();
+  });
+})
+//   //  console.table(rows);
+    
+  };
 
 const updatedRole = () => {
   // updateEmployee();
   inquirer.prompt(updateRole)
   .then((data) => { 
 
-    const [roleUpdate, employeeUpdate] = data
-  const sql = `UPDATE employee SET role_id = role_id WHERE role_id;
-
-  SET employee.first_name = first_name and employee.last_name = last_name WHERE first_name;`
+    const [roleUpdate] = data
+  const sql = `UPDATE role1 SET id = id WHERE id ; `
   // UPDATE role1 SET role1.title = title WHERE title;
-  const params = [roleUpdate, employeeUpdate]
 
-  db.query(sql, params, (err, result) => {
+let role = getTitleAndId(roleUpdate);
+
+  const params = [role]
+
+      db.query(sql, params, (err, result) => {
     for (i = 0; i < result.length; i++) {
-      myRoles.push(result[i].role_id);
+  //     myRoles.push(result[i].id);
+      myEmployees.push(result[i].full_name);
    }
   console.log(result);
     console.table(result);
