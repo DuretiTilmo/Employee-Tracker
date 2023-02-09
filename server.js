@@ -38,7 +38,7 @@ const promptUser = [
       type: "list",
       name: "startApp",
       message: "What would you like to do?",
-      choices : [ "View all departments", "View all roles", "View all employees", "Add a department", "Add a role", "Add an employee", "Update an employee role\n"]
+      choices : [ "View all departments", "View all roles", "View all employees", "View employees by department",  "Add a department", "Add a role", "Add an employee", "Update an employee role\n"]
    },
 ]
   // View department
@@ -156,7 +156,7 @@ const getEmployee = () => {
 
   const getManagerId = (name) => {
       for (i = 0; i < managersNameandId.length; i++) {
-        console.log(managersNameandId[i]);
+        // console.log(managersNameandId[i]);
         if (managersNameandId[i].full_name === name) {
        
            return managersNameandId[i].id;
@@ -232,7 +232,8 @@ const init = () => {
       } else if (choice == "View all employees") {
           getEmployee();
           // promptUser();
-
+        } else if (choice == "View employees by department") {
+          getEmployeeAndDepart();  
       } else if (choice == "Add a department") {
           newDepartment();   
           // promptUser();
@@ -267,7 +268,7 @@ const newDepartment = () => {
    
    db.query(sql, params, (err, result) => {
      console.table(result);
-    console.log(result)
+    // console.log(result)
       init();
    });
   });
@@ -305,23 +306,33 @@ const newEmployee = () => {
      const sql = `INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?)`;
 
     let roleId = getRoleId(employeeRole);
-    console.log(employeeRole);
-    console.log(roleId);
+    // console.log(employeeRole);
+    // console.log(roleId);
 
     let managerId = getManagerId(manager);
-   console.log(manager);
+  //  console.log(manager);
          const params = [firstName, lastName, roleId, managerId];
      
        db.query(sql, params, (err, rows) => {
 
     console.table(rows);
 
-    console.log(params);
+    // console.log(params);
 
     init();
   });
 });
 } 
+// View employees by their department
+const getEmployeeAndDepart = () => {
+  const sql = `SELECT concat(employee.first_name,' ', employee.last_name) as 'full_name', department.name as department FROM employee JOIN role1 ON employee.role_id = role1.id JOIN department ON department.id = role1.department_id;`;
+  
+  db.query(sql, (err, result) => {
+     
+    console.table(result);
+    init();
+  });
+};
 
 
 const getAllRoles = () => {
@@ -358,7 +369,7 @@ const getAllEmployee = () =>{
 
 const getEmployeeId = (name) => {
   for (i = 0; i < nameAndId.length; i++) {
-    console.log(nameAndId[i]);
+    // console.log(nameAndId[i]);
     if (nameAndId[i].full_name === name) {
    
        return nameAndId[i].id;
@@ -384,8 +395,8 @@ const updateEmployee = () => {
       myRoles.push(result[i].id);
   //     myEmployees.push(result[i].full_name);
    }
-  console.log(result);
-    console.table(result);
+  // console.log(result);
+    // console.table(result);
     
     init();
   });
@@ -412,8 +423,8 @@ let role = getTitleAndId(roleUpdate);
   //     myRoles.push(result[i].id);
       myEmployees.push(result[i].full_name);
    }
-  console.log(result);
-    console.table(result);
+  // console.log(result);
+    // console.table(result);
     
     init();
   });
@@ -422,3 +433,4 @@ let role = getTitleAndId(roleUpdate);
 };
 
   init();
+
