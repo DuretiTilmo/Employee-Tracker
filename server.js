@@ -153,7 +153,6 @@ const getMangerName = () => {
 
 const getManagerId = (name) => {
   for (i = 0; i < managersNameandId.length; i++) {
-    // console.log(managersNameandId[i]);
     if (managersNameandId[i].full_name === name) {
       return managersNameandId[i].id;
     }
