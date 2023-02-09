@@ -20,7 +20,7 @@ Walkthrough video: https://drive.google.com/file/d/1hd7T2OThANa-iuDrFy5lYcFy1DIQ
 
 ## Test 
 
-'node index.js' or 'npm start' 
+'node server.js' or 'npm start' 
 
 ## Installation
 
